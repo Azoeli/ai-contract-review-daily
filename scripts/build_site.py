@@ -28,16 +28,17 @@ ARCHIVE_HEAD = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title} · 历史归档</title>
 <style>
- body{{background:#0b0e14;color:#d7dce6;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",Arial,sans-serif;line-height:1.6}}
- .wrap{{max-width:760px;margin:0 auto;padding:40px 20px}}
- h1{{font-size:22px;border-bottom:1px solid #232a3b;padding-bottom:14px}}
- a.back{{color:#22d3ee;text-decoration:none;font-size:13px}}
- ul{{list-style:none;margin-top:20px}}
- li{{border:1px solid #232a3b;border-radius:10px;margin-bottom:10px;background:#11151f}}
- li a{{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;color:#d7dce6;text-decoration:none}}
- li a:hover{{color:#22d3ee}}
- .cnt{{color:#8b93a7;font-size:12px;font-family:ui-monospace,Menlo,monospace}}
- .foot{{margin-top:30px;color:#8b93a7;font-size:12px;font-family:ui-monospace,Menlo,monospace}}
+ body{{background:#F4F3EF;color:#1A1A18;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}}
+ .wrap{{max-width:760px;margin:0 auto;padding:44px 20px}}
+ h1{{font-size:21px;letter-spacing:-.3px;border-bottom:1px solid #EFEFEC;padding-bottom:16px}}
+ a.back{{color:#2563EB;text-decoration:none;font-size:13px}}
+ a.back:hover{{text-decoration:underline;text-underline-offset:2px}}
+ ul{{list-style:none;margin-top:22px}}
+ li{{border:1px solid #E2E1DC;border-radius:14px;margin-bottom:10px;background:#FEFEFE;box-shadow:0 1px 4px rgba(0,0,0,.06)}}
+ li a{{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;color:#1A1A18;text-decoration:none;font-size:13.5px}}
+ li a:hover{{color:#2563EB}}
+ .cnt{{color:#9A9A94;font-size:11px;font-family:ui-monospace,Menlo,monospace;white-space:nowrap}}
+ .foot{{margin-top:32px;color:#B0B0A8;font-size:11px;font-family:ui-monospace,Menlo,monospace}}
 </style></head><body><div class="wrap">
 <a class="back" href="index.html">&larr; 返回最新一期</a>
 <h1>{title} · 历史归档</h1>

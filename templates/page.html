@@ -5,72 +5,132 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>__TITLE__ · __DATE__</title>
 <style>
+  /* 设计令牌 · 参考 ai-frontier（暖纸浅色系） */
   :root{
-    --bg:#0b0e14; --panel:#11151f; --panel2:#161b28; --border:#232a3b;
-    --text:#d7dce6; --muted:#8b93a7; --accent:#22d3ee; --accent2:#4ade80;
-    --gold:#fbbf24; --red:#f87171;
+    --bg-page:#F4F3EF;
+    --bg-card:#FEFEFE;
+    --bg-soft:#F5F5F2;
+    --bg-hover:#EEECEA;
+    --border-soft:#EFEFEC;
+    --border-card:#E2E1DC;
+    --border-strong:#C8C7C1;
+    --text-1:#1A1A18;
+    --text-2:#5A5A56;
+    --text-3:#6A6A66;
+    --text-4:#9A9A94;
+    --text-5:#B0B0A8;
+    --text-6:#C0BFB8;
+    --blue:#2563EB;
+    --blue-mid:#3B82F6;
+    --blue-soft:rgba(37,99,235,.12);
+    --em-border:#6EE7B7;
+    --em-bg:#ECFDF5;
+    --em-text:#047857;
+    --em-text-2:#059669;
+    --amber-bg:#FFFBEB;
+    --amber-border:#FDE68A;
+    --amber-text:#B45309;
+    --shadow:0 1px 4px rgba(0,0,0,.06);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.65}
-  .wrap{max-width:900px;margin:0 auto;padding:32px 20px 80px}
+  body{
+    background:var(--bg-page);color:var(--text-1);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+    font-size:14px;line-height:1.8;-webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--blue-soft);color:var(--text-1)}
+  ::-webkit-scrollbar{width:5px;height:5px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:#D0D0CA;border-radius:99px}
+  .wrap{max-width:860px;margin:0 auto;padding:36px 20px 72px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 
   /* header */
-  header{border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:24px}
-  .kicker{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
-  h1{font-size:26px;font-weight:700;letter-spacing:.5px}
-  .meta-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px;font-size:13px;color:var(--muted)}
-  .chip{background:var(--panel);border:1px solid var(--border);border-radius:999px;padding:3px 12px;font-family:ui-monospace,Menlo,monospace;font-size:12px}
-  .chip b{color:var(--accent2);font-weight:600}
-  .demo-banner{margin-top:12px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.35);color:var(--gold);border-radius:8px;padding:8px 14px;font-size:13px}
+  header{margin-bottom:26px}
+  .kicker{font-size:11px;color:var(--text-4);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+  h1{font-size:25px;font-weight:700;letter-spacing:-.3px;color:var(--text-1)}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+  .chip{background:var(--bg-soft);border:1px solid var(--border-soft);border-radius:999px;padding:3px 12px;font-size:11px;color:var(--text-2)}
+  .chip b{color:var(--blue);font-weight:600}
+  .demo-banner{margin-top:14px;background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber-text);border-radius:12px;padding:9px 14px;font-size:12.5px}
 
   /* search */
-  .toolbar{display:flex;gap:10px;margin-bottom:20px;align-items:center}
-  .toolbar input{flex:1;background:var(--panel);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:9px 14px;font-size:14px;outline:none}
-  .toolbar input:focus{border-color:var(--accent)}
-  .toolbar .hint{font-size:12px;color:var(--muted);white-space:nowrap;font-family:ui-monospace,Menlo,monospace}
+  .toolbar{display:flex;gap:10px;margin-bottom:22px;align-items:center}
+  .toolbar input{
+    flex:1;background:var(--bg-card);border:1px solid var(--border-card);border-radius:12px;
+    color:var(--text-1);padding:10px 16px;font-size:13.5px;outline:none;box-shadow:var(--shadow);
+  }
+  .toolbar input::placeholder{color:var(--text-5)}
+  .toolbar input:focus{border-color:var(--blue-mid)}
+  .toolbar .hint{font-size:11px;color:var(--text-5);white-space:nowrap}
 
   /* insight */
-  .insight{background:linear-gradient(135deg,rgba(34,211,238,.07),rgba(74,222,128,.05));border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;padding:18px 20px;margin-bottom:28px}
-  .insight h2{font-size:14px;color:var(--accent);margin-bottom:8px;font-weight:600}
-  .insight p{font-size:14px;color:var(--text)}
+  .insight{background:var(--bg-card);border:1px solid var(--border-card);border-radius:16px;box-shadow:var(--shadow);padding:20px 22px;margin-bottom:26px}
+  .insight h2{font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .insight h2::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--em-border)}
+  .insight p{font-size:13.5px;color:var(--text-3);line-height:1.9}
 
   /* section nav */
-  .sec-nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
-  .sec-nav a{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--border);border-radius:999px;padding:4px 14px;background:var(--panel);transition:.15s}
-  .sec-nav a:hover{color:var(--accent);border-color:var(--accent)}
+  .sec-nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:26px}
+  .sec-nav a{
+    color:var(--text-4);text-decoration:none;font-size:12.5px;border-radius:999px;
+    padding:5px 14px;background:var(--bg-soft);border:1px solid var(--border-soft);transition:.15s;
+  }
+  .sec-nav a:hover{color:var(--blue);background:var(--bg-card);border-color:var(--border-card)}
 
-  /* sections */
+  /* section header: 标题 + 细线 + 计数胶囊 */
   section{margin-bottom:34px}
-  section>h3{font-size:17px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-  section>h3 .cnt{color:var(--muted);font-size:13px;font-weight:400;margin-left:8px;font-family:ui-monospace,Menlo,monospace}
+  .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .sec-head .name{font-size:15px;font-weight:600;color:var(--text-1);letter-spacing:-.2px;white-space:nowrap}
+  .sec-head .hairline{flex:1;height:1px;background:var(--border-soft)}
+  .sec-head .cnt{font-size:11px;color:var(--text-4);background:var(--bg-soft);border:1px solid var(--border-soft);padding:2px 10px;border-radius:999px;white-space:nowrap}
 
   /* item card */
-  .item{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;transition:border-color .15s}
-  .item.active{border-color:var(--accent);box-shadow:0 0 0 1px rgba(34,211,238,.35)}
-  .item .top{display:flex;gap:10px;align-items:baseline}
-  .item .rank{font-family:ui-monospace,Menlo,monospace;color:var(--muted);font-size:13px;min-width:26px}
-  .item a.title{color:var(--text);text-decoration:none;font-weight:600;font-size:15px}
-  .item a.title:hover{color:var(--accent)}
-  .item .stars{color:var(--gold);font-size:13px;white-space:nowrap;margin-left:auto}
-  .item .summary{color:var(--text);font-size:14px;margin:6px 0 0 36px}
-  .item .tip{color:var(--muted);font-size:13px;margin:6px 0 0 36px;font-style:italic}
-  .item .tip::before{content:"法务启示 · ";color:var(--accent2);font-style:normal;font-weight:600}
-  .item .foot{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0 0 36px;font-size:12px;color:var(--muted)}
-  .tag{background:var(--panel2);border:1px solid var(--border);border-radius:4px;padding:1px 8px;font-family:ui-monospace,Menlo,monospace;font-size:11px}
-  .src{color:var(--accent);text-decoration:none}
-  .src:hover{text-decoration:underline}
+  .item{
+    background:var(--bg-card);border:1px solid var(--border-card);border-radius:16px;
+    box-shadow:var(--shadow);padding:18px 20px;margin-bottom:12px;transition:.15s;
+  }
+  .item:hover{border-color:var(--border-strong)}
+  .item.active{border-color:var(--blue-mid);box-shadow:0 0 0 3px var(--blue-soft)}
+  .item .top{display:flex;gap:10px;align-items:flex-start}
+  .item .rank{font-size:10px;color:var(--text-6);min-width:22px;padding-top:4px}
+  .item a.title{
+    color:var(--text-1);text-decoration:none;font-weight:600;font-size:14.5px;line-height:1.5;flex:1;
+  }
+  .item a.title:hover{color:var(--blue)}
+  .item .impact{display:flex;align-items:center;gap:6px;white-space:nowrap;padding-top:4px}
+  .item .impact .bar{width:52px;height:4px;border-radius:99px;background:#E8E7E3;overflow:hidden}
+  .item .impact .bar i{display:block;height:100%;border-radius:99px;background:var(--blue-mid)}
+  .item .impact .num{font-size:10px;color:var(--text-4)}
+  .item .summary{font-size:13px;color:var(--text-3);line-height:1.8;margin:8px 0 0 32px}
+  .item .tip{
+    border-left:3px solid var(--em-border);background:var(--em-bg);border-radius:0 12px 12px 0;
+    padding:8px 14px;font-size:12px;color:var(--em-text);line-height:1.75;margin:10px 0 0 32px;
+  }
+  .item .tip b{color:var(--em-text-2);font-weight:600}
+  .item .foot{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:12px 0 0 32px}
+  .tag{
+    background:var(--bg-soft);border:1px solid var(--border-soft);border-radius:999px;
+    padding:1px 9px;font-size:10px;color:var(--text-5);
+  }
+  .src{font-size:11px;color:var(--blue-mid);text-decoration:none;font-weight:500;margin-left:auto}
+  .src:hover{color:var(--blue);text-decoration:underline;text-underline-offset:2px}
+  .date-str{font-size:11px;color:var(--text-5)}
   .hidden{display:none}
 
-  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;font-family:ui-monospace,Menlo,monospace;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-  footer a{color:var(--muted)}
-  .empty{color:var(--muted);text-align:center;padding:40px 0}
+  footer{
+    margin-top:44px;padding-top:18px;border-top:1px solid var(--border-soft);
+    color:var(--text-5);font-size:11px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+  footer a{color:var(--text-4);text-decoration:none}
+  footer a:hover{color:var(--blue)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="kicker">Daily Digest · Auto Generated</div>
+    <div class="kicker mono">Daily Digest · Auto Generated</div>
     <h1 id="site-title"></h1>
     <div class="meta-row" id="meta-row"></div>
     <div class="demo-banner hidden" id="demo-banner">演示数据 · 条目为示例内容，仅用于展示页面效果</div>
@@ -78,7 +138,7 @@
 
   <div class="toolbar">
     <input id="search" type="text" placeholder="搜索标题 / 摘要 / 标签 / 来源…" autocomplete="off">
-    <span class="hint">j/k 导航 · Enter 打开 · / 搜索</span>
+    <span class="hint mono">j/k 导航 · Enter 打开 · / 搜索</span>
   </div>
 
   <div class="insight" id="insight-box">
@@ -90,8 +150,8 @@
   <main id="main"></main>
 
   <footer>
-    <span id="footer-left"></span>
-    <span><a href="archive.html">历史归档</a></span>
+    <span class="mono" id="footer-left"></span>
+    <span class="mono"><a href="archive.html">历史归档</a></span>
   </footer>
 </div>
 
@@ -104,7 +164,7 @@ function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&l
 document.getElementById("site-title").textContent = DATA.meta.title;
 const total = DATA.sections.reduce((n,s)=>n+s.items.length,0);
 document.getElementById("meta-row").innerHTML =
-  `<span class="chip">${esc(DATA.meta.date)}</span>`+
+  `<span class="chip mono">${esc(DATA.meta.date)}</span>`+
   `<span class="chip">栏目 <b>${DATA.sections.length}</b></span>`+
   `<span class="chip">条目 <b>${total}</b></span>`+
   `<span class="chip">信源命中 <b>${(DATA.sources_hit||[]).length}</b></span>`;
@@ -118,26 +178,29 @@ const main = document.getElementById("main");
 const nav = document.getElementById("sec-nav");
 let allItems = [];
 DATA.sections.forEach(sec=>{
-  nav.insertAdjacentHTML("beforeend",`<a href="#${esc(sec.id)}">${esc(sec.name)} ${sec.items.length}</a>`);
+  nav.insertAdjacentHTML("beforeend",`<a href="#${esc(sec.id)}">${esc(sec.name)} · ${sec.items.length}</a>`);
   const el = document.createElement("section");
   el.id = sec.id;
-  el.innerHTML = `<h3>${esc(sec.name)}<span class="cnt">${sec.items.length} 条</span></h3>`;
+  el.innerHTML = `<div class="sec-head"><span class="name">${esc(sec.name)}</span><span class="hairline"></span><span class="cnt mono">${sec.items.length} 条</span></div>`;
   sec.items.forEach(it=>{
-    const stars = "★".repeat(it.score||0) + "☆".repeat(Math.max(0,5-(it.score||0)));
-    const tags = (it.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("");
-    const tip = it.legal_tip ? `<div class="tip">${esc(it.legal_tip)}</div>` : "";
+    const score = it.score||0;
+    const tags = (it.tags||[]).map(t=>`<span class="tag mono">${esc(t)}</span>`).join("");
+    const tip = it.legal_tip ? `<div class="tip"><b>法务启示</b> · ${esc(it.legal_tip)}</div>` : "";
     el.insertAdjacentHTML("beforeend", `
       <div class="item" data-search="${esc((it.title+" "+it.summary+" "+(it.tags||[]).join(" ")+" "+it.source).toLowerCase())}">
         <div class="top">
-          <span class="rank">${String(it.rank).padStart(2,"0")}</span>
+          <span class="rank mono">${String(it.rank).padStart(2,"0")}</span>
           <a class="title" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a>
-          <span class="stars" title="影响力评分">${stars}</span>
+          <span class="impact" title="影响力评分">
+            <span class="bar"><i style="width:${score*20}%"></i></span>
+            <span class="num mono">${score}/5</span>
+          </span>
         </div>
         <div class="summary">${esc(it.summary)}</div>
         ${tip}
         <div class="foot">${tags}
-          <a class="src" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.source)}</a>
-          ${it.published?`<span>· ${esc(it.published)}</span>`:""}
+          <span class="date-str mono">${it.published?esc(it.published):""}</span>
+          <a class="src" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.source)} ↗</a>
         </div>
       </div>`);
   });
