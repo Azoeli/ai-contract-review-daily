@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>__TITLE__ · __DATE__</title>
+<style>
+  :root{
+    --bg:#0b0e14; --panel:#11151f; --panel2:#161b28; --border:#232a3b;
+    --text:#d7dce6; --muted:#8b93a7; --accent:#22d3ee; --accent2:#4ade80;
+    --gold:#fbbf24; --red:#f87171;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.65}
+  .wrap{max-width:900px;margin:0 auto;padding:32px 20px 80px}
+
+  /* header */
+  header{border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:24px}
+  .kicker{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+  h1{font-size:26px;font-weight:700;letter-spacing:.5px}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px;font-size:13px;color:var(--muted)}
+  .chip{background:var(--panel);border:1px solid var(--border);border-radius:999px;padding:3px 12px;font-family:ui-monospace,Menlo,monospace;font-size:12px}
+  .chip b{color:var(--accent2);font-weight:600}
+  .demo-banner{margin-top:12px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.35);color:var(--gold);border-radius:8px;padding:8px 14px;font-size:13px}
+
+  /* search */
+  .toolbar{display:flex;gap:10px;margin-bottom:20px;align-items:center}
+  .toolbar input{flex:1;background:var(--panel);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:9px 14px;font-size:14px;outline:none}
+  .toolbar input:focus{border-color:var(--accent)}
+  .toolbar .hint{font-size:12px;color:var(--muted);white-space:nowrap;font-family:ui-monospace,Menlo,monospace}
+
+  /* insight */
+  .insight{background:linear-gradient(135deg,rgba(34,211,238,.07),rgba(74,222,128,.05));border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;padding:18px 20px;margin-bottom:28px}
+  .insight h2{font-size:14px;color:var(--accent);margin-bottom:8px;font-weight:600}
+  .insight p{font-size:14px;color:var(--text)}
+
+  /* section nav */
+  .sec-nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+  .sec-nav a{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--border);border-radius:999px;padding:4px 14px;background:var(--panel);transition:.15s}
+  .sec-nav a:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* sections */
+  section{margin-bottom:34px}
+  section>h3{font-size:17px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  section>h3 .cnt{color:var(--muted);font-size:13px;font-weight:400;margin-left:8px;font-family:ui-monospace,Menlo,monospace}
+
+  /* item card */
+  .item{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;transition:border-color .15s}
+  .item.active{border-color:var(--accent);box-shadow:0 0 0 1px rgba(34,211,238,.35)}
+  .item .top{display:flex;gap:10px;align-items:baseline}
+  .item .rank{font-family:ui-monospace,Menlo,monospace;color:var(--muted);font-size:13px;min-width:26px}
+  .item a.title{color:var(--text);text-decoration:none;font-weight:600;font-size:15px}
+  .item a.title:hover{color:var(--accent)}
+  .item .stars{color:var(--gold);font-size:13px;white-space:nowrap;margin-left:auto}
+  .item .summary{color:var(--text);font-size:14px;margin:6px 0 0 36px}
+  .item .tip{color:var(--muted);font-size:13px;margin:6px 0 0 36px;font-style:italic}
+  .item .tip::before{content:"法务启示 · ";color:var(--accent2);font-style:normal;font-weight:600}
+  .item .foot{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0 0 36px;font-size:12px;color:var(--muted)}
+  .tag{background:var(--panel2);border:1px solid var(--border);border-radius:4px;padding:1px 8px;font-family:ui-monospace,Menlo,monospace;font-size:11px}
+  .src{color:var(--accent);text-decoration:none}
+  .src:hover{text-decoration:underline}
+  .hidden{display:none}
+
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;font-family:ui-monospace,Menlo,monospace;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  footer a{color:var(--muted)}
+  .empty{color:var(--muted);text-align:center;padding:40px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Daily Digest · Auto Generated</div>
+    <h1 id="site-title"></h1>
+    <div class="meta-row" id="meta-row"></div>
+    <div class="demo-banner hidden" id="demo-banner">演示数据 · 条目为示例内容，仅用于展示页面效果</div>
+  </header>
+
+  <div class="toolbar">
+    <input id="search" type="text" placeholder="搜索标题 / 摘要 / 标签 / 来源…" autocomplete="off">
+    <span class="hint">j/k 导航 · Enter 打开 · / 搜索</span>
+  </div>
+
+  <div class="insight" id="insight-box">
+    <h2>今日洞见</h2>
+    <p id="insight-text"></p>
+  </div>
+
+  <div class="sec-nav" id="sec-nav"></div>
+  <main id="main"></main>
+
+  <footer>
+    <span id="footer-left"></span>
+    <span><a href="archive.html">历史归档</a></span>
+  </footer>
+</div>
+
+<script>
+const DATA = __DATA__;
+
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
+// ---- header ----
+document.getElementById("site-title").textContent = DATA.meta.title;
+const total = DATA.sections.reduce((n,s)=>n+s.items.length,0);
+document.getElementById("meta-row").innerHTML =
+  `<span class="chip">${esc(DATA.meta.date)}</span>`+
+  `<span class="chip">栏目 <b>${DATA.sections.length}</b></span>`+
+  `<span class="chip">条目 <b>${total}</b></span>`+
+  `<span class="chip">信源命中 <b>${(DATA.sources_hit||[]).length}</b></span>`;
+if(DATA.meta.demo) document.getElementById("demo-banner").classList.remove("hidden");
+document.getElementById("insight-text").textContent = DATA.insight || "今日无综合洞见。";
+document.getElementById("footer-left").textContent =
+  `${DATA.meta.title} · ${DATA.meta.generator||"QoderWork cron 自动生成"}`;
+
+// ---- sections ----
+const main = document.getElementById("main");
+const nav = document.getElementById("sec-nav");
+let allItems = [];
+DATA.sections.forEach(sec=>{
+  nav.insertAdjacentHTML("beforeend",`<a href="#${esc(sec.id)}">${esc(sec.name)} ${sec.items.length}</a>`);
+  const el = document.createElement("section");
+  el.id = sec.id;
+  el.innerHTML = `<h3>${esc(sec.name)}<span class="cnt">${sec.items.length} 条</span></h3>`;
+  sec.items.forEach(it=>{
+    const stars = "★".repeat(it.score||0) + "☆".repeat(Math.max(0,5-(it.score||0)));
+    const tags = (it.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("");
+    const tip = it.legal_tip ? `<div class="tip">${esc(it.legal_tip)}</div>` : "";
+    el.insertAdjacentHTML("beforeend", `
+      <div class="item" data-search="${esc((it.title+" "+it.summary+" "+(it.tags||[]).join(" ")+" "+it.source).toLowerCase())}">
+        <div class="top">
+          <span class="rank">${String(it.rank).padStart(2,"0")}</span>
+          <a class="title" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a>
+          <span class="stars" title="影响力评分">${stars}</span>
+        </div>
+        <div class="summary">${esc(it.summary)}</div>
+        ${tip}
+        <div class="foot">${tags}
+          <a class="src" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.source)}</a>
+          ${it.published?`<span>· ${esc(it.published)}</span>`:""}
+        </div>
+      </div>`);
+  });
+  main.appendChild(el);
+});
+allItems = Array.from(document.querySelectorAll(".item"));
+
+// ---- search ----
+const searchBox = document.getElementById("search");
+function applyFilter(){
+  const q = searchBox.value.trim().toLowerCase();
+  allItems.forEach(el=>el.classList.toggle("hidden", q && !el.dataset.search.includes(q)));
+  document.querySelectorAll("section").forEach(sec=>{
+    const visible = sec.querySelectorAll(".item:not(.hidden)").length;
+    sec.classList.toggle("hidden", visible===0);
+  });
+}
+searchBox.addEventListener("input",applyFilter);
+
+// ---- keyboard nav ----
+let cursor = -1;
+function move(delta){
+  const visible = allItems.filter(el=>!el.classList.contains("hidden"));
+  if(!visible.length) return;
+  if(cursor>=0 && visible[cursor]) visible[cursor].classList.remove("active");
+  cursor = (cursor + delta + visible.length) % visible.length;
+  const el = visible[cursor];
+  el.classList.add("active");
+  el.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+document.addEventListener("keydown",e=>{
+  if(e.target===searchBox){
+    if(e.key==="Escape"){searchBox.blur();e.preventDefault();}
+    return;
+  }
+  if(e.key==="/"){e.preventDefault();searchBox.focus();return;}
+  if(e.key==="j"||e.key==="ArrowDown"){e.preventDefault();move(1);}
+  if(e.key==="k"||e.key==="ArrowUp"){e.preventDefault();move(-1);}
+  if(e.key==="Enter"&&cursor>=0){
+    const visible = allItems.filter(el=>!el.classList.contains("hidden"));
+    const a = visible[cursor] && visible[cursor].querySelector("a.title");
+    if(a) window.open(a.href,"_blank","noopener");
+  }
+});
+</script>
+</body>
+</html>

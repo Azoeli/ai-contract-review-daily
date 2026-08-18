@@ -1,0 +1,53 @@
+# =============================================================
+# daily-github-actions.yml — 可选工作流：完整复刻 ai-frontier 模式
+#
+# 完全在 GitHub 侧跑定时任务：抓 RSS -> 调 LLM API 加工 -> 生成 JSON
+# -> 提交 -> 触发 pages.yml 部署。不依赖本机开机。
+#
+# 启用前必须：
+#   1. 仓库 Settings -> Secrets 中添加 ANTHROPIC_API_KEY
+#   2. 将下方 schedule 的注释取消（默认仅支持手动触发，防止误跑烧额度）
+#   3. 按需修改 scripts/daily_pipeline.py 中的 RSS_SOURCES 信源列表
+#
+# 注意：如果已经用 QoderWork cron（本机）生成日报并推送 JSON，
+# 就不需要启用本工作流——两种模式二选一即可，避免重复出刊。
+# =============================================================
+name: Daily Digest (GitHub Actions full-auto)
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "0 0 * * *"   # UTC 00:00 = 北京时间 08:00
+
+permissions:
+  contents: write
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install --quiet feedparser anthropic
+
+      - name: Collect RSS + generate digest JSON
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python3 scripts/daily_pipeline.py
+
+      - name: Commit new digest (if any)
+        run: |
+          git config user.name "ai-daily-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/digests/*.json
+          if git diff --cached --quiet; then
+            echo "no new digest, skip commit"
+          else
+            git commit -m "daily digest $(date -u +%F)"
+            git push
+          fi

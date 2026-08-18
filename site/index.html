@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI合同审查日报 · 2026-08-18</title>
+<style>
+  :root{
+    --bg:#0b0e14; --panel:#11151f; --panel2:#161b28; --border:#232a3b;
+    --text:#d7dce6; --muted:#8b93a7; --accent:#22d3ee; --accent2:#4ade80;
+    --gold:#fbbf24; --red:#f87171;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.65}
+  .wrap{max-width:900px;margin:0 auto;padding:32px 20px 80px}
+
+  /* header */
+  header{border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:24px}
+  .kicker{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+  h1{font-size:26px;font-weight:700;letter-spacing:.5px}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px;font-size:13px;color:var(--muted)}
+  .chip{background:var(--panel);border:1px solid var(--border);border-radius:999px;padding:3px 12px;font-family:ui-monospace,Menlo,monospace;font-size:12px}
+  .chip b{color:var(--accent2);font-weight:600}
+  .demo-banner{margin-top:12px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.35);color:var(--gold);border-radius:8px;padding:8px 14px;font-size:13px}
+
+  /* search */
+  .toolbar{display:flex;gap:10px;margin-bottom:20px;align-items:center}
+  .toolbar input{flex:1;background:var(--panel);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:9px 14px;font-size:14px;outline:none}
+  .toolbar input:focus{border-color:var(--accent)}
+  .toolbar .hint{font-size:12px;color:var(--muted);white-space:nowrap;font-family:ui-monospace,Menlo,monospace}
+
+  /* insight */
+  .insight{background:linear-gradient(135deg,rgba(34,211,238,.07),rgba(74,222,128,.05));border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;padding:18px 20px;margin-bottom:28px}
+  .insight h2{font-size:14px;color:var(--accent);margin-bottom:8px;font-weight:600}
+  .insight p{font-size:14px;color:var(--text)}
+
+  /* section nav */
+  .sec-nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+  .sec-nav a{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--border);border-radius:999px;padding:4px 14px;background:var(--panel);transition:.15s}
+  .sec-nav a:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* sections */
+  section{margin-bottom:34px}
+  section>h3{font-size:17px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  section>h3 .cnt{color:var(--muted);font-size:13px;font-weight:400;margin-left:8px;font-family:ui-monospace,Menlo,monospace}
+
+  /* item card */
+  .item{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;transition:border-color .15s}
+  .item.active{border-color:var(--accent);box-shadow:0 0 0 1px rgba(34,211,238,.35)}
+  .item .top{display:flex;gap:10px;align-items:baseline}
+  .item .rank{font-family:ui-monospace,Menlo,monospace;color:var(--muted);font-size:13px;min-width:26px}
+  .item a.title{color:var(--text);text-decoration:none;font-weight:600;font-size:15px}
+  .item a.title:hover{color:var(--accent)}
+  .item .stars{color:var(--gold);font-size:13px;white-space:nowrap;margin-left:auto}
+  .item .summary{color:var(--text);font-size:14px;margin:6px 0 0 36px}
+  .item .tip{color:var(--muted);font-size:13px;margin:6px 0 0 36px;font-style:italic}
+  .item .tip::before{content:"法务启示 · ";color:var(--accent2);font-style:normal;font-weight:600}
+  .item .foot{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0 0 36px;font-size:12px;color:var(--muted)}
+  .tag{background:var(--panel2);border:1px solid var(--border);border-radius:4px;padding:1px 8px;font-family:ui-monospace,Menlo,monospace;font-size:11px}
+  .src{color:var(--accent);text-decoration:none}
+  .src:hover{text-decoration:underline}
+  .hidden{display:none}
+
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;font-family:ui-monospace,Menlo,monospace;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  footer a{color:var(--muted)}
+  .empty{color:var(--muted);text-align:center;padding:40px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Daily Digest · Auto Generated</div>
+    <h1 id="site-title"></h1>
+    <div class="meta-row" id="meta-row"></div>
+    <div class="demo-banner hidden" id="demo-banner">演示数据 · 条目为示例内容，仅用于展示页面效果</div>
+  </header>
+
+  <div class="toolbar">
+    <input id="search" type="text" placeholder="搜索标题 / 摘要 / 标签 / 来源…" autocomplete="off">
+    <span class="hint">j/k 导航 · Enter 打开 · / 搜索</span>
+  </div>
+
+  <div class="insight" id="insight-box">
+    <h2>今日洞见</h2>
+    <p id="insight-text"></p>
+  </div>
+
+  <div class="sec-nav" id="sec-nav"></div>
+  <main id="main"></main>
+
+  <footer>
+    <span id="footer-left"></span>
+    <span><a href="archive.html">历史归档</a></span>
+  </footer>
+</div>
+
+<script>
+const DATA = {"meta": {"title": "AI合同审查日报", "date": "2026-08-18", "demo": true, "generator": "QoderWork cron + LLM 自动生成（示例）"}, "insight": "今日主线是 Agent 化：头部 CLM 厂商不约而同把叙事从『审查辅助』推向『自主谈判/自主执行』，合同审查工具正在从『人审+AI提效』过渡到『AI初审+人把关』。对法务团队而言，短期最值得跟进的是审查规则的可外化表达（playbook/规则库），它是把组织经验沉淀为 AI 可执行资产的入口，也是未来与 Agent 对接的接口。", "sections": [{"id": "tools", "name": "A · 工具动态", "items": [{"rank": 1, "title": "Anthropic 发布 Claude for Legal，原生接入主流 CLM 平台", "summary": "Anthropic 推出面向法律行业的 Claude for Legal 方案，通过 MCP 协议直连 DocuSign、Ironclad 等合同管理平台，支持条款抽取、红线比对与风险标注。", "legal_tip": "大模型原厂下场做法律垂直集成，意味着『模型+连接器』的组合将成为合同审查工具的新基线，选型时应优先考察 MCP/标准化接口的开放性。", "score": 5, "tags": ["Claude", "MCP", "CLM"], "source": "Anthropic News", "url": "https://www.anthropic.com/news", "published": "2026-08-17"}, {"rank": 2, "title": "Luminance 更新自主谈判模块，覆盖价格与责任上限条款", "summary": "Luminance 宣布其 Autonomous 产品线新增谈判能力，可在预设边界内就价格、责任上限、付款周期等商务条款自动给出还价建议。", "legal_tip": "『边界内自主谈判』要求企业先把己方谈判底线结构化——这正是审查 playbook 中 LOW/MED/HIGH 分级处置建议的用武之地。", "score": 4, "tags": ["自主谈判", "Luminance"], "source": "Luminance News", "url": "https://www.luminance.com/press", "published": "2026-08-17"}]}, {"id": "methods", "name": "B · 前沿方法", "items": [{"rank": 3, "title": "论文：多Agent协作合同审查框架，关键条款抽取 F1 达 0.90", "summary": "一篇 ACM 论文提出多 Agent 分工的合同审查架构（抽取-校验-仲裁三层），在商业合同基准上将关键要素抽取 F1 提升至约 0.90，并显著降低漏检率。", "legal_tip": "多域并行初筛+集中仲裁的架构与四域并行审查流程互相印证，可作为内部审查流水线下一阶段的工程参考。", "score": 4, "tags": ["多Agent", "F1", "论文"], "source": "ACM Digital Library", "url": "https://dl.acm.org/", "published": "2026-08-16"}, {"rank": 4, "title": "工程实践：用规则卡片（Rule Card）替代长 Prompt 做审查", "summary": "一篇工程博客介绍将审查手册切分为独立规则卡片、按需组合注入上下文的做法，称可将审查一致性问题减少约四成，且单条规则可独立回归测试。", "legal_tip": "规则卡片化与 playbook-splitter 的『单体Playbook切分为独立规则+索引』思路一致，验证了该方向的行业共识。", "score": 3, "tags": ["Prompt工程", "规则库"], "source": "LegalTech Talk", "url": "https://www.legaltech-talk.com/", "published": "2026-08-17"}]}, {"id": "opensource", "name": "C · 开源与Prompt", "items": [{"rank": 5, "title": "awesome-legaltech 收录新一批合同审查数据集与评测基准", "summary": "社区清单 awesome-legaltech 本周新增多个合同条款分类数据集与审查评测基准，涵盖保密、责任限制、知识产权等高频条款类型。", "legal_tip": "公开基准可用于自研审查流水线的回归测试，建议将内部 playbook 的抽样条款与其对齐，量化审查质量。", "score": 3, "tags": ["开源", "数据集", "评测"], "source": "GitHub", "url": "https://github.com/Vaquill-AI/awesome-legaltech", "published": "2026-08-17"}]}, {"id": "regulation", "name": "D · 监管与案例", "items": [{"rank": 6, "title": "EU AI Act 高风险系统义务进入适用倒计时，合同条款影响盘点", "summary": "欧盟 AI Act 高风险 AI 系统相关义务临近适用节点，行业分析指出采购合同中的 AI 供应商合规陈述、审计权与责任分配条款将成为谈判焦点。", "legal_tip": "涉欧采购合同建议在供应商陈述保证中增加 AI Act 合规承诺，并预留合规文件审计权，与现有 SGNC/合规审查清单衔接。", "score": 4, "tags": ["EU AI Act", "合规", "跨境"], "source": "artificialintelligenceact.eu", "url": "https://artificialintelligenceact.eu/", "published": "2026-08-15"}, {"rank": 7, "title": "行业报告：法务部门 AI 采用率持续上升，合同审查是第一落地场景", "summary": "Clio 年度法律趋势报告显示，合同审查/起草是法务团队采用生成式 AI 比例最高的场景，同时对『输出需人工复核』的共识也在强化。", "legal_tip": "外部采用率数据可作为内部推动 AI 审查试点的佐证材料，同时『人工复核』共识支持保留法务终审的红线设计。", "score": 3, "tags": ["行业报告", "采用率"], "source": "Clio Legal Trends", "url": "https://www.clio.com/blog/legal-trends-report/", "published": "2026-08-14"}]}], "sources_hit": ["Anthropic News", "Luminance News", "ACM Digital Library", "LegalTech Talk", "GitHub (awesome-legaltech)", "artificialintelligenceact.eu", "Clio Legal Trends"]};
+
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
+// ---- header ----
+document.getElementById("site-title").textContent = DATA.meta.title;
+const total = DATA.sections.reduce((n,s)=>n+s.items.length,0);
+document.getElementById("meta-row").innerHTML =
+  `<span class="chip">${esc(DATA.meta.date)}</span>`+
+  `<span class="chip">栏目 <b>${DATA.sections.length}</b></span>`+
+  `<span class="chip">条目 <b>${total}</b></span>`+
+  `<span class="chip">信源命中 <b>${(DATA.sources_hit||[]).length}</b></span>`;
+if(DATA.meta.demo) document.getElementById("demo-banner").classList.remove("hidden");
+document.getElementById("insight-text").textContent = DATA.insight || "今日无综合洞见。";
+document.getElementById("footer-left").textContent =
+  `${DATA.meta.title} · ${DATA.meta.generator||"QoderWork cron 自动生成"}`;
+
+// ---- sections ----
+const main = document.getElementById("main");
+const nav = document.getElementById("sec-nav");
+let allItems = [];
+DATA.sections.forEach(sec=>{
+  nav.insertAdjacentHTML("beforeend",`<a href="#${esc(sec.id)}">${esc(sec.name)} ${sec.items.length}</a>`);
+  const el = document.createElement("section");
+  el.id = sec.id;
+  el.innerHTML = `<h3>${esc(sec.name)}<span class="cnt">${sec.items.length} 条</span></h3>`;
+  sec.items.forEach(it=>{
+    const stars = "★".repeat(it.score||0) + "☆".repeat(Math.max(0,5-(it.score||0)));
+    const tags = (it.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("");
+    const tip = it.legal_tip ? `<div class="tip">${esc(it.legal_tip)}</div>` : "";
+    el.insertAdjacentHTML("beforeend", `
+      <div class="item" data-search="${esc((it.title+" "+it.summary+" "+(it.tags||[]).join(" ")+" "+it.source).toLowerCase())}">
+        <div class="top">
+          <span class="rank">${String(it.rank).padStart(2,"0")}</span>
+          <a class="title" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a>
+          <span class="stars" title="影响力评分">${stars}</span>
+        </div>
+        <div class="summary">${esc(it.summary)}</div>
+        ${tip}
+        <div class="foot">${tags}
+          <a class="src" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.source)}</a>
+          ${it.published?`<span>· ${esc(it.published)}</span>`:""}
+        </div>
+      </div>`);
+  });
+  main.appendChild(el);
+});
+allItems = Array.from(document.querySelectorAll(".item"));
+
+// ---- search ----
+const searchBox = document.getElementById("search");
+function applyFilter(){
+  const q = searchBox.value.trim().toLowerCase();
+  allItems.forEach(el=>el.classList.toggle("hidden", q && !el.dataset.search.includes(q)));
+  document.querySelectorAll("section").forEach(sec=>{
+    const visible = sec.querySelectorAll(".item:not(.hidden)").length;
+    sec.classList.toggle("hidden", visible===0);
+  });
+}
+searchBox.addEventListener("input",applyFilter);
+
+// ---- keyboard nav ----
+let cursor = -1;
+function move(delta){
+  const visible = allItems.filter(el=>!el.classList.contains("hidden"));
+  if(!visible.length) return;
+  if(cursor>=0 && visible[cursor]) visible[cursor].classList.remove("active");
+  cursor = (cursor + delta + visible.length) % visible.length;
+  const el = visible[cursor];
+  el.classList.add("active");
+  el.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+document.addEventListener("keydown",e=>{
+  if(e.target===searchBox){
+    if(e.key==="Escape"){searchBox.blur();e.preventDefault();}
+    return;
+  }
+  if(e.key==="/"){e.preventDefault();searchBox.focus();return;}
+  if(e.key==="j"||e.key==="ArrowDown"){e.preventDefault();move(1);}
+  if(e.key==="k"||e.key==="ArrowUp"){e.preventDefault();move(-1);}
+  if(e.key==="Enter"&&cursor>=0){
+    const visible = allItems.filter(el=>!el.classList.contains("hidden"));
+    const a = visible[cursor] && visible[cursor].querySelector("a.title");
+    if(a) window.open(a.href,"_blank","noopener");
+  }
+});
+</script>
+</body>
+</html>
